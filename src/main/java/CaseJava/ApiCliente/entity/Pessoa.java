@@ -1,7 +1,9 @@
 package CaseJava.ApiCliente.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "Pessoa")
 public class Pessoa {

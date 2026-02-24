@@ -1,7 +1,11 @@
 package CaseJava.ApiCliente.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+import java.util.List;
+
+@Data
 @Entity
 @Table(name = "cidade")
 public class Cidade {
@@ -15,4 +19,9 @@ public class Cidade {
 
     @Column(nullable = false, length =  2)
     private String uf;
+
+    @ManyToOne
+    @JoinColumn(name = "cidade_id", nullable = false)
+    private Cidade cidade;
+
 }
