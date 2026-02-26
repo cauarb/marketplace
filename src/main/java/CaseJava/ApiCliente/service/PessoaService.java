@@ -56,4 +56,38 @@ public class PessoaService {
                 ))
                 .toList();
     }
+
+    @Transactional
+    public PessoaResponseDTO atualizar (Long id, PessoaRequestDTO dto){
+
+        Pessoa pessoa = pessoaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
+
+        Cidade cidade =  cidadeRepository.findById(dto.getCidadeId())
+                .orElseThrow(() -> new RuntimeException("Cidade não encontrada"));
+
+
+        pessoa.setNome(dto.getNome());
+        pessoa.setCpfCnpj(dto.getCpfCnpj());
+        pessoa.setEndereco(dto.getEndereco());
+        pessoa.setNumero(dto.getNumero());
+        pessoa.setBairro(dto.getBairro());
+        pessoa.setCep(dto.getCep());
+        pessoa.setTelefone(dto.getTelefone());
+        pessoa.setEmail(dto.getEmail());
+        pessoa.setCidade(cidade);
+
+        Pessoa atualizada = pessoaRepository.save(pessoa);
+
+        return converterParaDTO(atualizada);
+    }
+
+    @Transactional
+    public void deletar(Long id){
+        if (!pessoaRepository.existsById(id)){
+            throw new RuntimeException("Pessoa não encontrada");
+        }
+        pessoaRepository.d
+    }
+
 }

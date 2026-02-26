@@ -12,21 +12,20 @@ public class Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false)
     private String nome;
 
-    @Column(name = "cpf_cnpj", nullable = false, length = 14)
+    @Column(nullable = false, unique = true)
     private String cpfCnpj;
 
     private String endereco;
     private String numero;
     private String bairro;
     private String cep;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cidade_id")
-    private  Cidade cidade;
-
     private String telefone;
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "cidade_id", nullable = false)
+    private Cidade cidade;
 }

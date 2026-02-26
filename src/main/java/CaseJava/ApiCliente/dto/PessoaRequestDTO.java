@@ -1,28 +1,25 @@
 package CaseJava.ApiCliente.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
+@Data
 public class PessoaRequestDTO {
 
-    @NotBlank(message = "Nome é obrigatório")
+    @NotBlank
     private String nome;
 
-    @NotBlank( message = "Cidade é obrigátoria")
+    @NotBlank
+    private String cpfCnpj;
+
+    private String endereco;
+    private String numero;
+    private String bairro;
+    private String cep;
+    private String telefone;
+    private String email;
+
+    @NotNull
     private Long cidadeId;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Long getCidadeId() {
-        return cidadeId;
-    }
-
-    public void setCidadeId(Long cidadeId) {
-        this.cidadeId = cidadeId;
-    }
 }
