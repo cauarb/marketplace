@@ -7,9 +7,12 @@ import CaseJava.ApiCliente.entity.Cidade;
 import CaseJava.ApiCliente.entity.Pessoa;
 import CaseJava.ApiCliente.repository.CidadeRepository;
 import CaseJava.ApiCliente.repository.PessoaRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -87,7 +90,16 @@ public class PessoaService {
         if (!pessoaRepository.existsById(id)){
             throw new RuntimeException("Pessoa não encontrada");
         }
-        pessoaRepository.d
+        pessoaRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public PessoaResponseDTO buscarPorCpfCnpj(String cpfCnpj) {
+
+        Pessoa pessoa = pessoaRepository.findByCpfCnpj(cpfCnpj)
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
+
+        return converterParaDTO(pessoa);
     }
 
 }

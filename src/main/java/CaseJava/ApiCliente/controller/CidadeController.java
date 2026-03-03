@@ -31,4 +31,17 @@ public class CidadeController {
     public ResponseEntity<List<CidadeResponseDTO>> listar() {
         return ResponseEntity.ok(service.listar());
     }
+
+    @PutMapping("/{ìd}")
+    public ResponseEntity<CidadeResponseDTO> atualizar (
+            @PathVariable Long id,
+            @RequestBody @Valid CidadeRequestDTO dto){
+        return ResponseEntity.ok(service.atualizar(id, dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id){
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

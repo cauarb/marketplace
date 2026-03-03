@@ -30,4 +30,24 @@ public class PessoaController {
         return ResponseEntity.ok(service.listar());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PessoaResponseDTO> atualizar(
+            @PathVariable Long id,
+            @RequestBody @Valid PessoaRequestDTO dto) {
+        return ResponseEntity.ok(service.atualizar(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id){
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/cpf/{cpfCnpj}")
+    public ResponseEntity<PessoaResponseDTO> buscarPorCpf(
+            @PathVariable String cpfCnpj) {
+
+        return ResponseEntity.ok(service.buscarPorCpfCnpj(cpfCnpj));
+    }
+
 }
