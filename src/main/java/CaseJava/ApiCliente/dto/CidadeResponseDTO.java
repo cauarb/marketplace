@@ -1,8 +1,6 @@
 package CaseJava.ApiCliente.dto;
 
 
-
-
 public class CidadeResponseDTO {
 
     private Long id;

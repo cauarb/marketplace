@@ -4,14 +4,28 @@ public class PessoaResponseDTO {
 
     private Long id;
     private String nome;
-    private String cidadeNome;
-    private String cidadeuf;
+    private String cpfCnpj;
+    private String telefone;
+    private String email;
+    private String cidade;
+    private String uf;
 
-    public PessoaResponseDTO( Long id, String nome, String cidadeNome, String cidadeuf){
+    public PessoaResponseDTO(
+            Long id,
+            String nome,
+            String cpfCnpj,
+            String telefone,
+            String email,
+            String cidade,
+            String uf) {
+
         this.id = id;
-        this.nome =  nome;
-        this.cidadeNome = cidadeNome;
-        this.cidadeuf = cidadeuf;
+        this.nome = nome;
+        this.cpfCnpj = cpfCnpj;
+        this.telefone = telefone;
+        this.email = email;
+        this.cidade = cidade;
+        this.uf = uf;
     }
 
     public Long getId() {
@@ -30,19 +44,43 @@ public class PessoaResponseDTO {
         this.nome = nome;
     }
 
-    public String getCidadeuf() {
-        return cidadeuf;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setCidadeuf(String cidadeuf) {
-        this.cidadeuf = cidadeuf;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public String getCidadeNome() {
-        return cidadeNome;
+    public String getCpfCnpj() {
+        return cpfCnpj;
     }
 
-    public void setCidadeNome(String cidadeNome) {
-        this.cidadeNome = cidadeNome;
+    public void setCpfCnpj(String cpfCnpj) {
+        this.cpfCnpj = cpfCnpj;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
     }
 }

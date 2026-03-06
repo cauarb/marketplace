@@ -43,6 +43,9 @@ public class PessoaService {
         return new PessoaResponseDTO(
                 salva.getId(),
                 salva.getNome(),
+                salva.getCpfCnpj(),
+                salva.getTelefone(),
+                salva.getEmail(),
                 salva.getCidade().getNome(),
                 salva.getCidade().getUf()
         );
@@ -54,6 +57,9 @@ public class PessoaService {
                 .map(p -> new PessoaResponseDTO(
                         p.getId(),
                         p.getNome(),
+                        p.getCpfCnpj(),
+                        p.getTelefone(),
+                        p.getEmail(),
                         p.getCidade().getNome(),
                         p.getCidade().getUf()
                 ))
@@ -100,6 +106,19 @@ public class PessoaService {
                 .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
 
         return converterParaDTO(pessoa);
+    }
+
+    private PessoaResponseDTO converterParaDTO(Pessoa pessoa){
+
+        return new PessoaResponseDTO(
+                pessoa.getId(),
+                pessoa.getNome(),
+                pessoa.getCpfCnpj(),
+                pessoa.getTelefone(),
+                pessoa.getEmail(),
+                pessoa.getCidade().getNome(),
+                pessoa.getCidade().getUf()
+        );
     }
 
 }
