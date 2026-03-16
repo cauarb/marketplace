@@ -33,6 +33,13 @@ public class PessoaService {
 
         Pessoa pessoa = new Pessoa();
         pessoa.setNome(dto.getNome());
+        pessoa.setCpfCnpj(dto.getCpfCnpj());
+        pessoa.setEndereco(dto.getEndereco());
+        pessoa.setNumero(dto.getNumero());
+        pessoa.setBairro(dto.getBairro());
+        pessoa.setCep(dto.getCep());
+        pessoa.setTelefone(dto.getTelefone());
+        pessoa.setEmail(dto.getEmail());
         pessoa.setCidade(cidade);
 
         Pessoa salva = pessoaRepository.save(pessoa);

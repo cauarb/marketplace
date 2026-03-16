@@ -19,8 +19,4 @@ public class Cidade {
     @Column(nullable = false, length =  2)
     private String uf;
 
-    @ManyToOne
-    @JoinColumn(name = "cidade_id", nullable = false)
-    private Cidade cidade;
-
 }
