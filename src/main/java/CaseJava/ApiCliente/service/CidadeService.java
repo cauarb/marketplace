@@ -2,8 +2,6 @@ package CaseJava.ApiCliente.service;
 
 import CaseJava.ApiCliente.dto.CidadeRequestDTO;
 import CaseJava.ApiCliente.dto.CidadeResponseDTO;
-import CaseJava.ApiCliente.dto.PessoaRequestDTO;
-import CaseJava.ApiCliente.dto.PessoaResponseDTO;
 import CaseJava.ApiCliente.entity.Cidade;
 import CaseJava.ApiCliente.repository.CidadeRepository;
 import org.springframework.stereotype.Service;

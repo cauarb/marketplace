@@ -20,7 +20,7 @@ public class CidadeController {
         this.service = service;
     }
 
-    @PatchMapping
+    @PostMapping
     public ResponseEntity<CidadeResponseDTO> salvar(
             @RequestBody @Valid CidadeRequestDTO dto) {
 
