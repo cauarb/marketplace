@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +23,9 @@ public class PedidoService {
     @Transactional
     public Long criar(PedidoDTO dto) {
 
+        Pedido pedido = new Pedido();
+        pedido.setStatus("PENDENTE");
+        Long pedidoId = pedidoRepository.salvar(pedido);
 
         for (ItemPedidoDTO itemDTO : dto.getItens()) {
 
@@ -32,34 +34,20 @@ public class PedidoService {
                             "Produto não encontrado: " + itemDTO.getProdutoId()
                     ));
 
-            // Regra do estoque mínimo
             int estoqueDisponivel = produto.getEstoque() - produto.getEstoqueMin();
 
             if (itemDTO.getQuantidade() > estoqueDisponivel) {
                 throw new RuntimeException(
-                        "Estoque insuficiente para o produto: " + produto.getNome() +
+                        "Estoque insuficiente para: " + produto.getNome() +
                                 ". Disponível: " + estoqueDisponivel
                 );
             }
-        }
-
-        // 2. Cria e captura o ID gerado
-        Pedido pedido = new Pedido();
-        pedido.setStatus("PENDENTE");
-        Long pedidoId = pedidoRepository.salvar(pedido);
-
-
-        for (ItemPedidoDTO itemDTO : dto.getItens()) {
-
-            Produto produto = produtoRepository.buscarPorId(itemDTO.getProdutoId())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
             ItemPedido item = new ItemPedido();
             item.setPedidoId(pedidoId);
             item.setProdutoId(produto.getId());
             item.setQuantidade(itemDTO.getQuantidade());
-            item.setPrecoUnit(produto.getPreco()); // preço no momento da compra
-
+            item.setPrecoUnit(produto.getPreco());
             pedidoRepository.salvarItem(item);
 
 

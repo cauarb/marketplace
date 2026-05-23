@@ -76,4 +76,9 @@ public class ProdutoRepository {
         jdbc.update("DELETE FROM produtos WHERE id = ?", id);
     }
 
+    public Optional<Produto> buscaPorIdLock(Long id) {
+        String sql = "SELECT * FROM produtos WHERE id = ? FOR UPDATE";
+        List<Produto> resultado = jdbc.query(sql, rowMapper, id);
+        return resultado.stream().findFirst();
+    }
 }
