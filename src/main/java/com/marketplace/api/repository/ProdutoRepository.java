@@ -30,7 +30,7 @@ public class ProdutoRepository {
 
     public  void salvar( Produto produto) {
         String sql = """
-            INSERT INTO produtos (nome, descricao, preco, estoque, estoqui_min)
+            INSERT INTO produtos (nome, descricao, preco, estoque, estoque_min)
                 VALUES(?,?,?,?,?)
             """;
 
