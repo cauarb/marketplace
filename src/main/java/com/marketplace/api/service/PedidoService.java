@@ -37,7 +37,7 @@ public class PedidoService {
             int estoqueDisponivel = produto.getEstoque() - produto.getEstoqueMin();
 
             if (itemDTO.getQuantidade() > estoqueDisponivel) {
-                throw new RuntimeException(
+                throw new IllegalArgumentException(
                         "Estoque insuficiente para: " + produto.getNome() +
                                 ". Disponível: " + estoqueDisponivel
                 );
