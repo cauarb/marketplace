@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { ProdutoListaComponent } from './pages/produtos/produto-lista.component';
-import { ProdutoFormComponent } from './pages/produtos/produto-form.component';
+import { ProdutoListaComponent } from './models/pages/produtos/produto-lista.component';
+import { ProdutoFormComponent } from './models/pages/produtos/produto-form.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'produtos', pathMatch: 'full' },
