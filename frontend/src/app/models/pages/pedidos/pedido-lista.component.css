@@ -4,11 +4,7 @@
   letter-spacing: 0.05em;
 }
 
-.badge-estoque {
+.badge-status {
   font-size: 0.85rem;
   padding: 0.4em 0.7em;
-}
-
-.botao-acao {
-  font-size: 0.75rem;
 }

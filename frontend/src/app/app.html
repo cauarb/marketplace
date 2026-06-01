@@ -1,1 +1,19 @@
-<router-outlet />
+<router-outlet /><nav class="navbar navbar-expand navbar-dark bg-dark px-4">
+  <a class="navbar-brand nome-sistema fw-bold" href="#">Marketplace</a>
+  <div class="navbar-nav">
+    <a class="nav-link"
+       routerLink="/produtos"
+       routerLinkActive="link-menu-ativo">
+      Produtos
+    </a>
+    <a class="nav-link"
+       routerLink="/pedidos"
+       routerLinkActive="link-menu-ativo">
+      Pedidos
+    </a>
+  </div>
+</nav>
+
+<div class="animacao-pagina">
+  <router-outlet />
+</div>

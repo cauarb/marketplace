@@ -15,7 +15,18 @@
   color: #555;
 }
 
-.campo-ativo:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+.secao-adicionar-item {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.titulo-secao {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.tabela-itens td,
+.tabela-itens th {
+  font-size: 0.85rem;
 }

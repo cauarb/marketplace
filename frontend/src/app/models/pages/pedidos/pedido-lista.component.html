@@ -1,0 +1,50 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Pedidos</h2>
+    <a routerLink="/pedidos/novo" class="btn btn-primary">
+      + Novo Pedido
+    </a>
+  </div>
+
+  <div *ngIf="carregando" class="text-center py-5 text-muted">
+    Carregando...
+  </div>
+
+  <div *ngIf="erro" class="alert alert-danger">
+    {{ erro }}
+  </div>
+
+  <div *ngIf="!carregando && !erro">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th class="titulo-tabela">#</th>
+          <th class="titulo-tabela">Status</th>
+          <th class="titulo-tabela">Itens</th>
+          <th class="titulo-tabela">Total</th>
+          <th class="titulo-tabela">Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pedido of pedidos">
+          <td>{{ pedido.id }}</td>
+          <td>
+            <span class="badge-status badge bg-warning text-dark">
+              {{ pedido.status }}
+            </span>
+          </td>
+          <td>{{ pedido.itens.length }} item(s)</td>
+          <td>{{ calcularTotal(pedido) | currency:'BRL' }}</td>
+          <td>{{ pedido.criadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
+        </tr>
+        <tr *ngIf="pedidos.length === 0">
+          <td colspan="5" class="text-center text-muted py-4">
+            Nenhum pedido encontrado.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -19,32 +19,32 @@
     <table class="table table-bordered table-hover">
       <thead class="table-light">
         <tr>
-          <th>Nome</th>
-          <th>Preço</th>
-          <th>Estoque</th>
-          <th>Mínimo</th>
-          <th>Ações</th>
+          <th class="titulo-tabela">Nome</th>
+          <th class="titulo-tabela">Preço</th>
+          <th class="titulo-tabela">Estoque</th>
+          <th class="titulo-tabela">Mínimo</th>
+          <th class="titulo-tabela">Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let produto de produtos">
+        <tr *ngFor="let produto of produtos">
           <td>{{ produto.nome }}</td>
           <td>{{ produto.preco | currency:'BRL' }}</td>
           <td>
             <span [class]="produto.estoque <= produto.estoqueMin
-              ? 'badge bg-danger'
-              : 'badge bg-success'">
+              ? 'badge-estoque badge bg-danger'
+              : 'badge-estoque badge bg-success'">
               {{ produto.estoque }}
             </span>
           </td>
           <td>{{ produto.estoqueMin }}</td>
           <td>
             <a [routerLink]="['/produtos/editar', produto.id]"
-               class="btn btn-sm btn-outline-primary me-2">
+               class="botao-acao btn btn-sm btn-outline-primary me-2">
               Editar
             </a>
             <button (click)="deletar(produto.id)"
-                    class="btn btn-sm btn-outline-danger">
+                    class="botao-acao btn btn-sm btn-outline-danger">
               Excluir
             </button>
           </td>
