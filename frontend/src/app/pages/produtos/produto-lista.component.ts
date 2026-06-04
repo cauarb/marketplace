@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProdutoService } from '../../../services/produto.service';
-import { Produto } from '../../produto.model';
+import { ProdutoService } from '../../services/produto.service';
+import { Produto } from '../../models/produto.model';
 
 @Component({
   selector: 'app-produto-lista',

@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ProdutoService } from '../../../services/produto.service';
-import { ProdutoDTO } from '../../produto.model';
-
+import { ProdutoService } from '../../services/produto.service';
+import { ProdutoDTO } from '../../models/produto.model';
 @Component({
   selector: 'app-produto-form',
   standalone: true,
