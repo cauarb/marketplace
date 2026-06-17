@@ -80,4 +80,30 @@ public class PedidoService {
 
         return pedidos;
     }
+
+    @Transactional
+    public void cancelar(Long id){
+
+        Pedido pedido = pedidoRepository.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        if (pedido.getStatus().equals("CANCELADO")){
+            throw new IllegalArgumentException("Pedido já esta cancelado");
+        }
+
+        List<ItemPedido> itens = pedidoRepository.buscarItensPorPedidoId(id);
+
+        for (ItemPedido item : itens) {
+            Produto produto = produtoRepository.buscarPorId(item.getProdutoId())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Produto não encontrado: " + item.getProdutoId()
+                    ));
+
+            produto.setEstoque(produto.getEstoque() + item.getQuantidade());
+            produtoRepository.atualizar(produto);
+        }
+
+        pedidoRepository.atualizarStatus(id, "CANCELADO");
+    }
+
 }
