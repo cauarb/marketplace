@@ -42,9 +42,26 @@ export class PedidoListaComponent implements OnInit {
     });
   }
 
+  cancelar(id: number): void {
+    if (!confirm('Tem certeza que deseja cancelar este pedido?')) return;
+
+    this.pedidoService.cancelar(id).subscribe({
+      next: () => {
+        this.carregarPedidos();
+      },
+      error: (err: any) => {
+        alert(err.error?.mensagem || 'Erro ao cancelar pedido');
+      }
+    });
+  }
+
   calcularTotal(pedido: Pedido): number {
     return pedido.itens.reduce((total, item) => {
       return total + (item.precoUnit * item.quantidade);
     }, 0);
+  }
+
+  isPendente(pedido: Pedido): boolean {
+    return pedido.status === 'PENDENTE';
   }
 }

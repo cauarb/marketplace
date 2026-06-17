@@ -24,4 +24,12 @@ export class PedidoService {
     criar(dto: PedidoDTO): Observable<number> {
     return this.http.post<number>(this.apiUrl, dto);
   }
+
+    atualizar(id: number, dto: PedidoDTO): Observable<void> {
+      return this.http.put<void>(`${this.apiUrl}/${id}`, dto);
+  }
+
+    cancelar(id: number): Observable<void> {
+      return this.http.patch<void>(`${this.apiUrl}/${id}/cancelar`, {});
+}
 }
