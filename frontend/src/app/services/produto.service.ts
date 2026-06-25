@@ -31,4 +31,12 @@ export class ProdutoService {
   deletar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  importarEletronicos(): Observable<Produto[]> {
+  return this.http.post<Produto[]>(
+    'http://localhost:8080/importacao/eletronicos',
+    {}
+  );
+}
+
 }

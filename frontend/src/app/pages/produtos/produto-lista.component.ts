@@ -17,6 +17,9 @@ export class ProdutoListaComponent implements OnInit {
   carregando = true;
   erro = '';
 
+  importando = false;
+  mensagemImportacao = '';
+
   constructor(
     private produtoService: ProdutoService,
     private cdr: ChangeDetectorRef
@@ -49,4 +52,29 @@ export class ProdutoListaComponent implements OnInit {
       error: () => alert('Erro ao deletar produto')
     });
   }
+
+  importar(): void {
+  if (!confirm('Deseja importar eletrônicos da Fakestore API?')) return;
+
+  this.importando = true;
+  this.mensagemImportacao = '';
+
+  this.produtoService.importarEletronicos().subscribe({
+    next: (produtos) => {
+      this.importando = false;
+      if (produtos.length === 0) {
+        this.mensagemImportacao = 'Todos os produtos já foram importados anteriormente.';
+      } else {
+        this.mensagemImportacao = `${produtos.length} produto(s) importado(s) com sucesso!`;
+      }
+      this.carregarProdutos();
+      this.cdr.detectChanges();
+    },
+    error: (err: any) => {
+      this.importando = false;
+      this.mensagemImportacao = err.error?.mensagem || 'Erro ao importar produtos';
+      this.cdr.detectChanges();
+    }
+  });
+}
 }
