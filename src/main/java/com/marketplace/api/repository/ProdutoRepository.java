@@ -81,4 +81,10 @@ public class ProdutoRepository {
         List<Produto> resultado = jdbc.query(sql, rowMapper, id);
         return resultado.stream().findFirst();
     }
+
+    public boolean existePorNome(String nome) {
+        String sql = "SELECT COUNT(*) FROM produtos WHERE nome = ?";
+        Integer total = jdbc.queryForObject(sql, Integer.class, nome);
+        return total != null && total > 0;
+    }
 }

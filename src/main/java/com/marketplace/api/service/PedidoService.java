@@ -3,8 +3,10 @@ package com.marketplace.api.service;
 import com.marketplace.api.dto.ItemPedidoDTO;
 import com.marketplace.api.dto.PedidoDTO;
 import com.marketplace.api.model.ItemPedido;
+import com.marketplace.api.model.MovimentacaoEstoque;
 import com.marketplace.api.model.Pedido;
 import com.marketplace.api.model.Produto;
+import com.marketplace.api.repository.MovimentacaoRepository;
 import com.marketplace.api.repository.PedidoRepository;
 import com.marketplace.api.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final ProdutoRepository produtoRepository;
+    private final MovimentacaoRepository movimentacaoRepository;
 
     @Transactional
     public Long criar(PedidoDTO dto) {
@@ -50,9 +53,16 @@ public class PedidoService {
             item.setPrecoUnit(produto.getPreco());
             pedidoRepository.salvarItem(item);
 
-
             produto.setEstoque(produto.getEstoque() - itemDTO.getQuantidade());
             produtoRepository.atualizar(produto);
+
+
+            MovimentacaoEstoque mov = new MovimentacaoEstoque();
+            mov.setProdutoId(produto.getId());
+            mov.setTipo("VENDA");
+            mov.setQuantidade(-itemDTO.getQuantidade());
+            mov.setMotivo("Pedido #" + pedidoId);
+            movimentacaoRepository.salvar(mov);
         }
 
         return pedidoId;
@@ -61,7 +71,6 @@ public class PedidoService {
     public Pedido buscarPorId(Long id) {
         Pedido pedido = pedidoRepository.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
-
 
         List<ItemPedido> itens = pedidoRepository.buscarItensPorPedido(id);
         pedido.setItens(itens);
@@ -72,7 +81,6 @@ public class PedidoService {
     public List<Pedido> listarTodos() {
         List<Pedido> pedidos = pedidoRepository.listarTodos();
 
-
         for (Pedido pedido : pedidos) {
             List<ItemPedido> itens = pedidoRepository.buscarItensPorPedido(pedido.getId());
             pedido.setItens(itens);
@@ -82,13 +90,13 @@ public class PedidoService {
     }
 
     @Transactional
-    public void cancelar(Long id){
+    public void cancelar(Long id) {
 
         Pedido pedido = pedidoRepository.buscarPorId(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-        if (pedido.getStatus().equals("CANCELADO")){
-            throw new IllegalArgumentException("Pedido já esta cancelado");
+        if (pedido.getStatus().equals("CANCELADO")) {
+            throw new IllegalArgumentException("Pedido já está cancelado");
         }
 
         List<ItemPedido> itens = pedidoRepository.buscarItensPorPedidoId(id);
@@ -101,9 +109,16 @@ public class PedidoService {
 
             produto.setEstoque(produto.getEstoque() + item.getQuantidade());
             produtoRepository.atualizar(produto);
+
+
+            MovimentacaoEstoque mov = new MovimentacaoEstoque();
+            mov.setProdutoId(item.getProdutoId());
+            mov.setTipo("CANCELAMENTO");
+            mov.setQuantidade(item.getQuantidade());
+            mov.setMotivo("Cancelamento do Pedido #" + id);
+            movimentacaoRepository.salvar(mov);
         }
 
         pedidoRepository.atualizarStatus(id, "CANCELADO");
     }
-
 }
