@@ -1,0 +1,67 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card shadow-sm cartao-formulario">
+        <div class="card-body p-4">
+
+          <h4 class="titulo-formulario mb-4">
+            {{ editando ? 'Editar Produto' : 'Novo Produto' }}
+          </h4>
+
+          <div class="mb-3">
+            <label class="form-label label-campo">Nome</label>
+            <input [(ngModel)]="form.nome"
+                   type="text"
+                   class="form-control campo-ativo"/>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label label-campo">Descrição</label>
+            <textarea [(ngModel)]="form.descricao"
+                      rows="3"
+                      class="form-control campo-ativo"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label label-campo">Preço</label>
+            <input [(ngModel)]="form.preco"
+                   type="number"
+                   step="0.01"
+                   class="form-control campo-ativo"/>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label label-campo">Estoque</label>
+              <input [(ngModel)]="form.estoque"
+                     type="number"
+                     class="form-control campo-ativo"/>
+            </div>
+            <div class="col">
+              <label class="form-label label-campo">Estoque Mínimo</label>
+              <input [(ngModel)]="form.estoqueMin"
+                     type="number"
+                     class="form-control campo-ativo"/>
+            </div>
+          </div>
+
+          <div *ngIf="erro" class="alert alert-danger">
+            {{ erro }}
+          </div>
+
+          <div class="d-flex gap-2 mt-2">
+            <button (click)="salvar()" class="btn btn-primary flex-fill">
+              {{ editando ? 'Salvar alterações' : 'Cadastrar' }}
+            </button>
+            <button (click)="voltar()" class="btn btn-secondary flex-fill">
+              Cancelar
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

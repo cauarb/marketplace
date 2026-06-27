@@ -1,0 +1,75 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Produtos</h2>
+    <div class="d-flex gap-2">
+      <button (click)="importar()"
+              [disabled]="importando"
+              class="btn btn-outline-secondary">
+        {{ importando ? 'Importando...' : '⬇ Importar Eletrônicos' }}
+      </button>
+      <a routerLink="/produtos/novo" class="btn btn-primary">
+        + Novo Produto
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="mensagemImportacao"
+       [class]="mensagemImportacao.includes('sucesso')
+         ? 'alert alert-success mb-3'
+         : 'alert alert-danger mb-3'">
+    {{ mensagemImportacao }}
+  </div>
+
+  <div *ngIf="carregando" class="text-center py-5 text-muted">
+    Carregando...
+  </div>
+
+  <div *ngIf="erro" class="alert alert-danger">
+    {{ erro }}
+  </div>
+
+  <div *ngIf="!carregando && !erro">
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th class="titulo-tabela">Nome</th>
+          <th class="titulo-tabela">Preço</th>
+          <th class="titulo-tabela">Estoque</th>
+          <th class="titulo-tabela">Mínimo</th>
+          <th class="titulo-tabela">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produto of produtos">
+          <td>{{ produto.nome }}</td>
+          <td>{{ produto.preco | currency:'BRL' }}</td>
+          <td>
+            <span [class]="produto.estoque <= produto.estoqueMin
+              ? 'badge-estoque badge bg-danger'
+              : 'badge-estoque badge bg-success'">
+              {{ produto.estoque }}
+            </span>
+          </td>
+          <td>{{ produto.estoqueMin }}</td>
+          <td>
+            <a [routerLink]="['/produtos/editar', produto.id]"
+               class="botao-acao btn btn-sm btn-outline-primary me-2">
+              Editar
+            </a>
+            <button (click)="deletar(produto.id)"
+                    class="botao-acao btn btn-sm btn-outline-danger">
+              Excluir
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="produtos.length === 0">
+          <td colspan="5" class="text-center text-muted py-4">
+            Nenhum produto cadastrado.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -1,34 +1,3 @@
-<<<<<<< HEAD
-# Backend
-backend/target/
-backend/.idea/
-backend/*.iml
-
-# Frontend
-frontend/node_modules/
-frontend/.angular/
-frontend/dist/
-
-# Java
-*.class
-*.jar
-*.war
-
-# Maven
-target/
-
-# IntelliJ
-.idea/
-*.iml
-
-# Node
-node_modules/
-dist/
-
-# Sistema
-.DS_Store
-Thumbs.db
-=======
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
@@ -62,4 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
->>>>>>> backend/main

@@ -1,0 +1,10 @@
+.titulo-tabela {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-status {
+  font-size: 0.85rem;
+  padding: 0.4em 0.7em;
+}
