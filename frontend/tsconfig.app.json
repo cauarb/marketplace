@@ -11,7 +11,7 @@
   "include": [
     "src/**/*.d.ts",
     "src/**/*.ts"
-  ],
+, "src/app/pages/auditoria"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

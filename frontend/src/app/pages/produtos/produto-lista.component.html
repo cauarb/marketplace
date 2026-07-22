@@ -37,6 +37,7 @@
           <th class="titulo-tabela">Preço</th>
           <th class="titulo-tabela">Estoque</th>
           <th class="titulo-tabela">Mínimo</th>
+          <th class="titulo-tabela">Desconto</th>
           <th class="titulo-tabela">Ações</th>
         </tr>
       </thead>
@@ -53,6 +54,12 @@
           </td>
           <td>{{ produto.estoqueMin }}</td>
           <td>
+            <span *ngIf="produto.desconto > 0" class="badge bg-warning text-dark">
+              {{ produto.desconto }}%
+            </span>
+            <span *ngIf="produto.desconto === 0" class="text-muted">—</span>
+          </td>
+          <td>
             <a [routerLink]="['/produtos/editar', produto.id]"
                class="botao-acao btn btn-sm btn-outline-primary me-2">
               Editar
@@ -64,7 +71,7 @@
           </td>
         </tr>
         <tr *ngIf="produtos.length === 0">
-          <td colspan="5" class="text-center text-muted py-4">
+          <td colspan="6" class="text-center text-muted py-4">
             Nenhum produto cadastrado.
           </td>
         </tr>

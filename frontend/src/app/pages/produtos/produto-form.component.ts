@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProdutoService } from '../../services/produto.service';
 import { ProdutoDTO } from '../../models/produto.model';
+
 @Component({
   selector: 'app-produto-form',
   standalone: true,
@@ -14,12 +15,16 @@ import { ProdutoDTO } from '../../models/produto.model';
 export class ProdutoFormComponent implements OnInit {
 
   form: ProdutoDTO = {
-    nome: '',
-    descricao: '',
-    preco: 0,
-    estoque: 0,
-    estoqueMin: 0
-  };
+  nome: '',
+  descricao: '',
+  preco: 0,
+  estoque: 0,
+  estoqueMin: 0,
+  desconto: 0,
+  motivoAlteracao: ''
+};
+
+  estoqueOriginal = 0;
 
   editando = false;
   produtoId: number | null = null;
@@ -28,7 +33,8 @@ export class ProdutoFormComponent implements OnInit {
   constructor(
     private produtoService: ProdutoService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -43,35 +49,40 @@ export class ProdutoFormComponent implements OnInit {
   carregarProduto(id: number): void {
     this.produtoService.buscarPorId(id).subscribe({
       next: (produto) => {
+        this.estoqueOriginal = produto.estoque;
         this.form = {
           nome: produto.nome,
           descricao: produto.descricao,
           preco: produto.preco,
           estoque: produto.estoque,
-          estoqueMin: produto.estoqueMin
+          estoqueMin: produto.estoqueMin,
+          desconto: produto.desconto,
+          motivoAlteracao: ''
         };
+        this.cdr.detectChanges();
       },
-      error: () => this.erro = 'Erro ao carregar produto'
+      error: () => {
+        this.erro = 'Erro ao carregar produto';
+        this.cdr.detectChanges();
+      }
     });
   }
 
   salvar(): void {
     this.erro = '';
-
     if (!this.form.nome) {
       this.erro = 'O nome é obrigatório';
       return;
     }
-
     if (this.editando && this.produtoId) {
       this.produtoService.atualizar(this.produtoId, this.form).subscribe({
         next: () => this.router.navigate(['/produtos']),
-        error: (err) => this.erro = err.error?.mensagem || 'Erro ao atualizar'
+        error: (err: any) => this.erro = err.error?.mensagem || 'Erro ao atualizar'
       });
     } else {
       this.produtoService.cadastrar(this.form).subscribe({
         next: () => this.router.navigate(['/produtos']),
-        error: (err) => this.erro = err.error?.mensagem || 'Erro ao cadastrar'
+        error: (err: any) => this.erro = err.error?.mensagem || 'Erro ao cadastrar'
       });
     }
   }

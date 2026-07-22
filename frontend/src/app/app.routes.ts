@@ -3,9 +3,13 @@ import { ProdutoListaComponent } from './pages/produtos/produto-lista.component'
 import { ProdutoFormComponent } from './pages/produtos/produto-form.component';
 import { PedidoListaComponent } from './pages/pedidos/pedido-lista.component';
 import { PedidoFormComponent } from './pages/pedidos/pedido-form.component'
+import { PainelComponent } from './pages/painel/painel.component';
+import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'produtos', pathMatch: 'full' },
+  { path: 'auditoria', component: AuditoriaComponent },
+  { path: 'painel', component: PainelComponent },
   { path: 'produtos', component: ProdutoListaComponent },
   { path: 'produtos/novo', component: ProdutoFormComponent },
   { path: 'produtos/editar/:id', component: ProdutoFormComponent },

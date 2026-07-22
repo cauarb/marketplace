@@ -5,6 +5,7 @@ export interface Produto {
   preco: number;
   estoque: number;
   estoqueMin: number;
+  desconto: number;
   criadoEm: string;
 }
 
@@ -14,4 +15,6 @@ export interface ProdutoDTO {
   preco: number;
   estoque: number;
   estoqueMin: number;
+  desconto: number;
+  motivoAlteracao?: string;
 }

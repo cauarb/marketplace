@@ -2,63 +2,70 @@
 
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Pedidos</h2>
-    <a routerLink="/pedidos/novo" class="btn btn-primary">
-      + Novo Pedido
-    </a>
+    <a routerLink="/pedidos/novo" class="btn btn-primary">+ Novo Pedido</a>
+  </div>
+
+  <div class="mb-4" style="max-width: 300px;">
+    <label class="form-label">Filtrar por status</label>
+    <select [(ngModel)]="filtroStatus"
+            (ngModelChange)="aplicarFiltro()"
+            class="form-select">
+      <option value="TODOS">Todos</option>
+      <option value="PENDENTE">Pendentes</option>
+      <option value="CONFIRMADO">Confirmados</option>
+      <option value="CANCELADO">Cancelados</option>
+    </select>
   </div>
 
   <div *ngIf="carregando" class="text-center py-5 text-muted">
     Carregando...
   </div>
 
-  <div *ngIf="erro" class="alert alert-danger">
-    {{ erro }}
-  </div>
+  <div *ngIf="erro" class="alert alert-danger">{{ erro }}</div>
 
-  <div *ngIf="!carregando && !erro">
-    <table class="table table-bordered table-hover">
-      <thead class="table-light">
-        <tr>
-          <th class="titulo-tabela">#</th>
-          <th class="titulo-tabela">Status</th>
-          <th class="titulo-tabela">Itens</th>
-          <th class="titulo-tabela">Total</th>
-          <th class="titulo-tabela">Data</th>
-          <th class="titulo-tabela">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let pedido of pedidos">
-          <td>{{ pedido.id }}</td>
-          <td>
-            <span [class]="pedido.status === 'CANCELADO'
-              ? 'badge-status badge bg-danger'
-              : 'badge-status badge bg-warning text-dark'">
-              {{ pedido.status }}
-            </span>
-          </td>
-          <td>{{ pedido.itens.length }} item(s)</td>
-          <td>{{ calcularTotal(pedido) | currency:'BRL' }}</td>
-          <td>{{ pedido.criadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
-          <td>
-            <button
-              *ngIf="isPendente(pedido)"
-              (click)="cancelar(pedido.id)"
-              class="btn btn-sm btn-outline-danger">
+  <table *ngIf="!carregando && !erro" class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Status</th>
+        <th>Itens</th>
+        <th>Total</th>
+        <th>Data</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pedido of pedidosFiltrados()">
+        <td>{{ pedido.id }}</td>
+        <td>
+          <span [class]="
+              pedido.status === 'CANCELADO' ? 'badge bg-danger' :
+              pedido.status === 'CONFIRMADO' ? 'badge bg-success' :
+              'badge bg-warning text-dark'">
+            {{ pedido.status }}
+          </span>
+        </td>
+        <td>{{ pedido.itens.length }} item(s)</td>
+        <td>{{ calcularTotal(pedido) | currency:'BRL' }}</td>
+        <td>{{ pedido.criadoEm | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>
+          <div *ngIf="isPendente(pedido)" class="d-flex gap-2">
+            <button (click)="confirmar(pedido.id)" class="btn btn-sm btn-outline-success">
+              Confirmar
+            </button>
+            <button (click)="cancelar(pedido.id)" class="btn btn-sm btn-outline-danger">
               Cancelar
             </button>
-            <span *ngIf="!isPendente(pedido)" class="text-muted" style="font-size: 0.8rem;">
-              —
-            </span>
-          </td>
-        </tr>
-        <tr *ngIf="pedidos.length === 0">
-          <td colspan="6" class="text-center text-muted py-4">
-            Nenhum pedido encontrado.
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </div>
+          <span *ngIf="!isPendente(pedido)" class="text-muted">—</span>
+        </td>
+      </tr>
+      <tr *ngIf="pedidosFiltrados().length === 0">
+        <td colspan="6" class="text-center text-muted py-4">
+          Nenhum pedido encontrado.
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>

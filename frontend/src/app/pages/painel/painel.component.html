@@ -1,0 +1,96 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Painel</h2>
+    <button (click)="carregarPainel()" class="btn btn-outline-secondary btn-sm">
+      Atualizar
+    </button>
+  </div>
+
+  <div *ngIf="carregando" class="text-center py-5 text-muted">Carregando...</div>
+  <div *ngIf="erro" class="alert alert-danger">{{ erro }}</div>
+
+  <div *ngIf="painel && !carregando">
+
+  
+    <h5 class="mb-3">Pedidos</h5>
+    <div class="row mb-4">
+      <div *ngFor="let card of getCardsPedidos()" class="col-md-4 mb-3">
+        <div class="card text-center p-3">
+          <small class="text-muted">{{ card.titulo }}</small>
+          <h3>{{ card.valor }}</h3>
+          <small class="text-success">{{ card.valorMoeda | currency:'BRL' }}</small>
+        </div>
+      </div>
+    </div>
+
+    
+    <h5 class="mb-3">Status</h5>
+    <div class="row mb-4">
+      <div *ngFor="let card of getCardsStatus()" class="col-md-4 mb-3">
+        <div class="card text-center p-3">
+          <small class="text-muted">{{ card.titulo }}</small>
+          <h4 [class]="card.cor">{{ card.valor }}</h4>
+        </div>
+      </div>
+    </div>
+
+    
+    <h5 class="mb-3">Indicadores</h5>
+    <div class="row mb-4">
+      <div class="col-md-4 mb-3">
+        <div class="card text-center p-3">
+          <small class="text-muted">Produtos cadastrados</small>
+          <h4>{{ painel.totalProdutos }}</h4>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center p-3">
+          <small class="text-muted">Valor em estoque</small>
+          <h4>{{ painel.valorTotalEstoque | currency:'BRL' }}</h4>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center p-3">
+          <small class="text-muted">Mais vendido</small>
+          <h6 class="mt-2">{{ painel.produtoMaisvendido }}</h6>
+        </div>
+      </div>
+    </div>
+
+    
+    <h5 class="mb-3">
+      Alertas de estoque
+      <span>{{ painel.produtosEmAlerta.length }}</span>
+    </h5>
+
+    <div *ngIf="painel.produtosEmAlerta.length === 0" class="alert alert-success">
+      Nenhum produto próximo do estoque mínimo.
+    </div>
+
+    <table *ngIf="painel.produtosEmAlerta.length > 0" class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Produto</th>
+          <th>Estoque</th>
+          <th>Mínimo</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produto of painel.produtosEmAlerta">
+          <td>{{ produto.nome }}</td>
+          <td><span class="badge bg-danger">{{ produto.estoque }}</span></td>
+          <td>{{ produto.estoqueMin }}</td>
+          <td>
+            <a [routerLink]="['/produtos/editar', produto.id]"
+               class="btn btn-sm btn-outline-primary">
+              Repor
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

@@ -32,4 +32,8 @@ export class PedidoService {
     cancelar(id: number): Observable<void> {
       return this.http.patch<void>(`${this.apiUrl}/${id}/cancelar`, {});
 }
+
+    confirmar(id: number): Observable<void> {
+        return this.http.patch<void>(`${this.apiUrl}/${id}/confirmar`, {});
+  }
 }

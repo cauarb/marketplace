@@ -35,6 +35,7 @@
             <div class="col">
               <label class="form-label label-campo">Estoque</label>
               <input [(ngModel)]="form.estoque"
+                (ngModelChange)="cdr.detectChanges()"
                      type="number"
                      class="form-control campo-ativo"/>
             </div>
@@ -46,6 +47,32 @@
             </div>
           </div>
 
+          <div class="mb-3" *ngIf="editando && form.estoque !== estoqueOriginal">
+  <label class="form-label">
+    Motivo da alteração de estoque
+    <span class="text-danger">*</span>
+  </label>
+  <input [(ngModel)]="form.motivoAlteracao"
+         type="text"
+         placeholder="Ex: Reposição, produto danificado, inventário..."
+         class="form-control"/>
+  <small class="text-muted">
+    Estoque alterado de {{ estoqueOriginal }} para {{ form.estoque }}
+    ({{ form.estoque - estoqueOriginal > 0 ? '+' : '' }}{{ form.estoque - estoqueOriginal }})
+  </small>
+</div>
+
+          <div class="mb-3">
+            <label class="form-label label-campo">Desconto (%)</label>
+              <input [(ngModel)]="form.desconto"
+                type="number"
+                min="0"
+                max="100"
+                step="0.01"
+                class="form-control campo-ativo"
+                placeholder="0.00"/>
+            <small class="text-muted">Digite 0 para sem desconto. Máximo 100%.</small>
+          </div>
           <div *ngIf="erro" class="alert alert-danger">
             {{ erro }}
           </div>

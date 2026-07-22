@@ -1,12 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Produto } from "../../models/produto.model";
-import { ItemPedido, ItemPedidoDTO, PedidoDTO } from "../../models/pedido.model";
+import { ItemPedidoDTO, PedidoDTO } from "../../models/pedido.model";
 import { PedidoService } from "../../services/pedido.service";
 import { ProdutoService } from "../../services/produto.service";
 import { Router } from "@angular/router";
-
 
 @Component({
   selector: 'app-pedido-form',
@@ -16,7 +15,6 @@ import { Router } from "@angular/router";
   styleUrl: './pedido-form.component.css'
 })
 export class PedidoFormComponent implements OnInit {
-
 
     produtos: Produto[] = [];
     itens: ItemPedidoDTO[] = [];
@@ -28,26 +26,35 @@ export class PedidoFormComponent implements OnInit {
     constructor(
         private pedidoService: PedidoService,
         private produtoService: ProdutoService,
-        private router: Router
+        private router: Router,
+        private cdr: ChangeDetectorRef
     ){}
 
     ngOnInit(): void {
         this.produtoService.listar().subscribe({
-            next: (dados) => this.produtos = dados,
-            error: () => this.erro = 'Errp ao carregar produtos'
+            next: (dados) => {
+                this.produtos = dados;
+                this.cdr.detectChanges();
+            },
+            error: () => {
+                this.erro = 'Erro ao carregar produtos';
+                this.cdr.detectChanges();
+            }
         });
     }
 
     adicionarItem(): void {
         this.erro = '';
 
-        if(!this.produtoSelecionado) {
+        if (!this.produtoSelecionado) {
             this.erro = 'Selecione um produto';
+            this.cdr.detectChanges();
             return;
         }
 
-        if(this.quantidadeSelecionada < 1){
+        if (this.quantidadeSelecionada < 1) {
             this.erro = 'A quantidade deve ser maior que zero';
+            this.cdr.detectChanges();
             return;
         }
 
@@ -55,8 +62,9 @@ export class PedidoFormComponent implements OnInit {
             i => i.produtoId === this.produtoSelecionado!.id
         );
 
-        if(jaAdicionado) {
+        if (jaAdicionado) {
             this.erro = 'Produto já adicionado ao pedido';
+            this.cdr.detectChanges();
             return;
         }
 
@@ -67,10 +75,13 @@ export class PedidoFormComponent implements OnInit {
 
         this.produtoSelecionado = null;
         this.quantidadeSelecionada = 1;
+        this.cdr.detectChanges();
     }
 
-    removerItem(index : number): void {
+    removerItem(index: number): void {
         this.itens.splice(index, 1);
+        this.erro = '';
+        this.cdr.detectChanges();
     }
 
     getNomeProduto(id: number): string {
@@ -80,14 +91,16 @@ export class PedidoFormComponent implements OnInit {
 
     salvar(): void {
         this.erro = '';
-        const dto: PedidoDTO = { itens: this.itens};
+        const dto: PedidoDTO = { itens: this.itens };
         this.pedidoService.criar(dto).subscribe({
             next: () => {
-                this.sucesso =  true;
+                this.sucesso = true;
+                this.cdr.detectChanges();
                 setTimeout(() => this.router.navigate(['/pedidos']), 1500);
             },
             error: (err: any) => {
-                this.erro = err.erro?.mensagem || 'Erro ao criar pedido';
+                this.erro = err.error?.mensagem || 'Erro ao criar pedido';
+                this.cdr.detectChanges();
             }
         });
     }
