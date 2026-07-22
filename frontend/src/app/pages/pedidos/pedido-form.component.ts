@@ -12,7 +12,6 @@ import { Router } from "@angular/router";
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './pedido-form.component.html',
-  styleUrl: './pedido-form.component.css'
 })
 export class PedidoFormComponent implements OnInit {
 
