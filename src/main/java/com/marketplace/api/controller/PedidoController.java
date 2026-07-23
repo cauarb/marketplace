@@ -33,4 +33,16 @@ public class PedidoController {
     public ResponseEntity<Pedido> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
+
+    @PatchMapping("/{id}/cancelar")
+    public ResponseEntity<Void> cancelar(@PathVariable Long id) {
+        service.cancelar(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/confirmar")
+    public ResponseEntity<Void> confirmar(@PathVariable Long id) {
+        service.confirmar(id);
+        return ResponseEntity.ok().build();
+    }
 }

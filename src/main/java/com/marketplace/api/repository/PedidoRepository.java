@@ -2,6 +2,7 @@ package com.marketplace.api.repository;
 
 import com.marketplace.api.model.ItemPedido;
 import com.marketplace.api.model.Pedido;
+import com.marketplace.api.model.Produto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -81,5 +82,15 @@ public class PedidoRepository {
     public List<Pedido> listarTodos() {
         String sql = "SELECT * FROM pedidos";
         return jdbc.query(sql, pedidoRowMapper);
+    }
+
+    public void atualizarStatus(Long id, String status) {
+        String sql = "UPDATE pedidos SET status = ? WHERE id = ?";
+        jdbc.update(sql, status, id);
+    }
+
+    public List<ItemPedido> buscarItensPorPedidoId(Long pedidoId) {
+        String sql = "SELECT * FROM itens_pedido WHERE pedido_id = ?";
+        return jdbc.query(sql, itemRowMapper, pedidoId);
     }
 }
