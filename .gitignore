@@ -63,3 +63,12 @@ build/
 ### VS Code ###
 .vscode/
 >>>>>>> backend/main
+# Arquivos do backend soltos na raiz
+src/
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml
+.gitattributes
+marketplace.api/
+target/
