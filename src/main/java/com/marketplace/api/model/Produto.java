@@ -14,5 +14,6 @@ public class Produto {
     private BigDecimal preco;
     private Integer estoque;
     private Integer estoqueMin;
+    private BigDecimal desconto;
     private LocalDateTime criadoEm;
 }

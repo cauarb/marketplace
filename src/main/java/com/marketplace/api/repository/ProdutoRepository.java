@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +25,15 @@ public class ProdutoRepository {
         p.setPreco(rs.getBigDecimal("preco"));
         p.setEstoque(rs.getInt("estoque"));
         p.setEstoqueMin(rs.getInt("estoque_min"));
+        p.setDesconto(rs.getBigDecimal("desconto"));
         p.setCriadoEm(rs.getTimestamp("criado_em").toLocalDateTime());
         return p;
     };
 
     public  void salvar( Produto produto) {
         String sql = """
-            INSERT INTO produtos (nome, descricao, preco, estoque, estoque_min)
-                VALUES(?,?,?,?,?)
+            INSERT INTO produtos (nome, descricao, preco, estoque, estoque_min, desconto)
+                VALUES(?,?,?,?,?,?)
             """;
 
         jdbc.update(sql,
@@ -39,7 +41,8 @@ public class ProdutoRepository {
                 produto.getDescricao(),
                 produto.getPreco(),
                 produto.getEstoque(),
-                produto.getEstoqueMin()
+                produto.getEstoqueMin(),
+                produto.getDesconto() != null ? produto.getDesconto() : BigDecimal.ZERO
         );
     }
 
@@ -58,9 +61,9 @@ public class ProdutoRepository {
     public void atualizar( Produto produto) {
         String sql = """
             UPDATE produtos
-                SET nome = ?, descricao = ?, preco = ?, estoque = ?, estoque_min = ?
-                    WHERE id = ?
-        """;
+                SET nome = ?, descricao = ?, preco = ?, estoque = ?, estoque_min = ?, desconto = ?
+                WHERE id = ?
+                """;
 
         jdbc.update(sql,
                 produto.getNome(),
@@ -68,6 +71,7 @@ public class ProdutoRepository {
                 produto.getPreco(),
                 produto.getEstoque(),
                 produto.getEstoqueMin(),
+                produto.getDesconto() != null ? produto.getDesconto() : BigDecimal.ZERO,
                 produto.getId()
         );
     }

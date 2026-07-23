@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -46,16 +47,26 @@ public class PedidoService {
                 );
             }
 
+
+            BigDecimal preco = produto.getPreco();
+            BigDecimal desconto = produto.getDesconto() != null
+                    ? produto.getDesconto()
+                    : BigDecimal.ZERO;
+
+            BigDecimal precoComDesconto = preco.subtract(
+                    preco.multiply(desconto)
+                            .divide(BigDecimal.valueOf(100), 2, java.math.RoundingMode.HALF_UP)
+            );
+
             ItemPedido item = new ItemPedido();
             item.setPedidoId(pedidoId);
             item.setProdutoId(produto.getId());
             item.setQuantidade(itemDTO.getQuantidade());
-            item.setPrecoUnit(produto.getPreco());
+            item.setPrecoUnit(precoComDesconto);
             pedidoRepository.salvarItem(item);
 
             produto.setEstoque(produto.getEstoque() - itemDTO.getQuantidade());
             produtoRepository.atualizar(produto);
-
 
             MovimentacaoEstoque mov = new MovimentacaoEstoque();
             mov.setProdutoId(produto.getId());
@@ -75,6 +86,13 @@ public class PedidoService {
         List<ItemPedido> itens = pedidoRepository.buscarItensPorPedido(id);
         pedido.setItens(itens);
 
+        BigDecimal total = itens.stream()
+                .map(item -> item.getPrecoUnit()
+                        .multiply(BigDecimal.valueOf(item.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        pedido.setValorTotal(total);
+
         return pedido;
     }
 
@@ -84,6 +102,13 @@ public class PedidoService {
         for (Pedido pedido : pedidos) {
             List<ItemPedido> itens = pedidoRepository.buscarItensPorPedido(pedido.getId());
             pedido.setItens(itens);
+
+            BigDecimal total = itens.stream()
+                    .map(item -> item.getPrecoUnit()
+                            .multiply(BigDecimal.valueOf(item.getQuantidade())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            pedido.setValorTotal(total);
         }
 
         return pedidos;
@@ -121,4 +146,20 @@ public class PedidoService {
 
         pedidoRepository.atualizarStatus(id, "CANCELADO");
     }
+
+    @Transactional
+    public void  confirmar(Long id) {
+
+        Pedido pedido = pedidoRepository.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        if (!pedido.getStatus().equals("PENDENTE")) {
+            throw new IllegalArgumentException("" +
+                    "Apenas pedidos pendentes podem ser confirmados: Status atual" +pedido.getStatus()
+            );
+        }
+
+        pedidoRepository.atualizarStatus(id, "CONFIRMADO");
+    }
+
 }

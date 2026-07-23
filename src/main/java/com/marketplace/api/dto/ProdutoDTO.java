@@ -26,4 +26,10 @@ public class ProdutoDTO {
     @Min(value = 0, message = "O estoque mínimo não pode ser negativo")
     private Integer estoqueMin;
 
+    @DecimalMin(value = "0.00", message = "O desconto não pode ser negativo")
+    @DecimalMax(value = "100.00", message = "O desconto não pode ser maior que 100%")
+    private BigDecimal desconto = BigDecimal.ZERO;
+
+    private String motivoAlteracao;
+
 }
