@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Backend
 backend/target/
 backend/.idea/
@@ -9,66 +8,14 @@ frontend/node_modules/
 frontend/.angular/
 frontend/dist/
 
-# Java
-*.class
-*.jar
-*.war
-
-# Maven
-target/
-
-# IntelliJ
-.idea/
-*.iml
-
-# Node
-node_modules/
-dist/
-
 # Sistema
 .DS_Store
 Thumbs.db
-=======
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
->>>>>>> backend/main
-# Arquivos do backend soltos na raiz
-src/
+# Arquivos soltos na raiz
 .mvn/
 mvnw
 mvnw.cmd
 pom.xml
 .gitattributes
 marketplace.api/
-target/
